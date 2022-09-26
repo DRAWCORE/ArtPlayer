@@ -3,7 +3,7 @@ name: Node CI
 on:
   push:
     branches:
-      - master
+      - feature-danmuku-enhancement
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -25,7 +25,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: npm install, lint, build, and test
+    - name: npm install, lint, build
       run: |
         npm install
         npm run lint
@@ -33,7 +33,14 @@ jobs:
         cd packages/artplayer-document && ls
         npm run build
         cd ../../ && ls
-        npm run test:create
-        npm run test
       env:
         CI: true
+    - name: Packing Dist JS File
+      uses: actions/upload-artifact@v2
+      with:
+        name: Dist JS File
+        path: |
+          packages/artplayer/dist
+          packages/artplayer-tool-thumbnail/dist
+          packages/artplayer-plugin-ads/dist
+          packages/artplayer-plugin-danmuku/dist
