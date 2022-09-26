@@ -39,6 +39,7 @@ export default class Danmuku {
         art.on('fullscreen', this.reset);
         art.on('fullscreenWeb', this.reset);
         art.on('destroy', this.destroy);
+        art.on('resize', this.reset);
 
         this.load();
     }
@@ -47,11 +48,11 @@ export default class Danmuku {
         return {
             danmuku: [],
             speed: 5,
-            margin: ['2%', '25%'],
+            margin: ['2%', '75%'],
             opacity: 1,
             color: '#FFFFFF',
             mode: 0,
-            fontSize: 25,
+            fontSize: '2%',
             filter: () => true,
             antiOverlap: true,
             useWorker: true,
@@ -63,6 +64,7 @@ export default class Danmuku {
             mount: undefined,
             theme: 'dark',
             beforeEmit: () => true,
+            showInput: true
         };
     }
 
@@ -86,6 +88,7 @@ export default class Danmuku {
             mount: 'undefined|htmldivelement',
             theme: 'string',
             beforeEmit: 'function',
+            showInput: 'boolean'
         };
     }
 
@@ -107,7 +110,7 @@ export default class Danmuku {
             return clamp(clientHeight * ratio, 0, clientHeight);
         }
 
-        return Danmuku.option.margin[0];
+        return 0.02 * clientHeight;
     }
 
     get marginBottom() {
@@ -124,7 +127,25 @@ export default class Danmuku {
             return clamp(clientHeight * ratio, 0, clientHeight);
         }
 
-        return Danmuku.option.margin[1];
+        return 0.75 * clientHeight;
+    }
+
+    convertMarginPercent() {
+        const { clamp } = this.utils;
+        const { clientHeight } = this.$player;
+        const value_top = this.option.margin[0];
+        const value_bottom = this.option.margin[1];
+        if (typeof value_top === 'number') {
+            this.option.margin[0] = clamp(parseInt(value_top / clientHeight * 100), 100, 0) + '%';
+        } else if (typeof value_top === 'string' && value_top.endsWith('%')) {
+            this.option.margin[0] = clamp(parseInt(value_top), 100, 0) + '%';
+        } else this.option.margin[0] = '2%';
+
+        if (typeof value_bottom === 'number') {
+            this.option.margin[1] = clamp(parseInt(value_bottom / clientHeight * 100), 100, 0) + '%';
+        } else if (typeof value_bottom === 'string' && value_bottom.endsWith('%')) {
+            this.option.margin[1] = clamp(parseInt(value_bottom), 100, 0) + '%';
+        } else this.option.margin[1] = '75%';
     }
 
     filter(state, callback) {
@@ -214,7 +235,20 @@ export default class Danmuku {
             return clamp(clientHeight * ratio, 12, clientHeight);
         }
 
-        return Danmuku.option.fontSize;
+        return 0.02 * clientHeight;
+    }
+
+    convertFontSizePercent() {
+        const { clamp } = this.utils;
+        const { clientHeight } = this.$player;
+
+        if (typeof this.option.fontSize === 'number') {
+            this.option.fontSize = clamp(parseInt(this.option.fontSize / clientHeight * 100), 30, 1) + '%';
+        } else if (typeof this.option.fontSize === 'string' && this.option.fontSize.endsWith('%')) {
+            this.option.fontSize = clamp(parseInt(this.option.fontSize), 30, 1) + '%';
+        } else {
+            this.option.fontSize = '2%';
+        }
     }
 
     postMessage(message = {}) {
@@ -276,9 +310,25 @@ export default class Danmuku {
         this.option.maxWidth = clamp(this.option.maxWidth, 0, Infinity);
 
         if (option.fontSize) {
-            this.option.fontSize = this.getFontSize(this.option.fontSize);
-            this.reset();
+            this.convertFontSizePercent();
         }
+
+        if (option.margin) {
+            this.convertMarginPercent();
+        }
+
+        if ('showInput' in option) {
+            var danmuku_emitter_element = this.art.query('.art-danmuku-emitter');
+            if (danmuku_emitter_element != null) {
+                if (option.showInput) {
+                    danmuku_emitter_element.style.display = 'flex';
+                } else {
+                    danmuku_emitter_element.style.display = 'none';
+                }
+            }
+        }
+
+        this.reset();
 
         this.art.emit('artplayerPluginDanmuku:config', this.option);
 
@@ -363,7 +413,7 @@ export default class Danmuku {
 
                     danmu.$ref.style.left = `${clientWidth}px`;
                     danmu.$ref.style.opacity = this.option.opacity;
-                    danmu.$ref.style.fontSize = `${this.option.fontSize}px`;
+                    danmu.$ref.style.fontSize = `${this.getFontSize(this.option.fontSize)}px`;
                     danmu.$ref.style.color = danmu.color;
                     danmu.$ref.style.border = danmu.border ? `1px solid ${danmu.color}` : null;
                     danmu.$ref.style.backgroundColor = danmu.border ? 'rgb(0 0 0 / 50%)' : null;
