@@ -24,7 +24,8 @@ jobs:
         node-version: [16.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Download Project
+      uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -34,9 +35,6 @@ jobs:
         npm install
         npm run lint
         npm run build:all
-        cd packages/artplayer-document && ls
-        npm run build
-        cd ../../ && ls
       env:
         CI: true
     - name: Packing Dist JS File
