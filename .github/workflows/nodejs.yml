@@ -1,4 +1,4 @@
-name: Node CI
+name: Build Danmuku Enhancement Dist JS File
 
 on:
   push:
@@ -9,10 +9,14 @@ on:
       - 'docs/**'
       - 'dist/**'
       - 'images/**'
+  pull_request:
+    branches:
+      - feature-danmuku-enhancement
+    types: [closed]
 
 jobs:
   build:
-
+    name: Build And Packing Dist JS File
     runs-on: ubuntu-latest
 
     strategy:
