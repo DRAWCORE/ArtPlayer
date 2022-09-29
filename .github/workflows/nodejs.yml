@@ -1,9 +1,9 @@
-name: Build Danmuku Enhancement Dist JS File
+name: Build Enhancement Dist JS File
 
 on:
   push:
     branches:
-      - feature-danmuku-enhancement
+      - enhancement
     paths-ignore:
       - '**.md'
       - 'docs/**'
@@ -11,7 +11,7 @@ on:
       - 'images/**'
   pull_request:
     branches:
-      - feature-danmuku-enhancement
+      - enhancement
     types: [closed]
 
 jobs:
