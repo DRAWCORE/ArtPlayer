@@ -228,20 +228,27 @@ class Artplayer extends (0, _emitterDefault.default) {
             this.setting = new (0, _settingDefault.default)(this);
             this.plugins = new (0, _pluginsDefault.default)(this);
         } else this.mobile = new (0, _mobileDefault.default)(this);
-        if (typeof readyCallback === "function") this.on("ready", ()=>readyCallback.call(this));
+        if (typeof readyCallback === "function") this.on("ready", ()=>readyCallback.call(this, this));
+        if (Artplayer.DEGUG) {
+            const log = (msg)=>console.log(`[ART.${this.id}] -> ${msg}`);
+            log("Version@" + Artplayer.version);
+            log("Env@" + Artplayer.env);
+            log("Build@" + Artplayer.build);
+            for(let index = 0; index < (0, _configDefault.default).events.length; index++)this.on("video:" + (0, _configDefault.default).events[index], (event)=>log("Event@" + event.type));
+        }
         instances.push(this);
     }
     static get instances() {
         return instances;
     }
     static get version() {
-        return "4.5.7";
+        return "4.5.8";
     }
     static get env() {
         return "development";
     }
     static get build() {
-        return "1664347978246";
+        return "2022-10-09 18:13:44";
     }
     static get config() {
         return 0, _configDefault.default;
@@ -345,6 +352,7 @@ class Artplayer extends (0, _emitterDefault.default) {
     }
 }
 exports.default = Artplayer;
+Artplayer.DEGUG = false;
 Artplayer.NOTICE_TIME = 2000;
 Artplayer.SETTING_WIDTH = 250;
 Artplayer.SETTING_ITEM_WIDTH = 200;
@@ -957,7 +965,8 @@ const ComponentOption = {
     switch: `?${b}`,
     onSwitch: `?${f}`,
     range: `?${a}`,
-    onRange: `?${f}`
+    onRange: `?${f}`,
+    onChange: `?${f}`
 };
 exports.default = {
     id: s,
@@ -1223,7 +1232,7 @@ class Template {
               <div class="art-info-panel">
                 <div class="art-info-item">
                   <div class="art-info-title">Player version:</div>
-                  <div class="art-info-content">${"4.5.7"}</div>
+                  <div class="art-info-content">${"4.5.8"}</div>
                 </div>
                 <div class="art-info-item">
                   <div class="art-info-title">Video url:</div>
@@ -1327,15 +1336,18 @@ var _csJson = require("./cs.json");
 var _csJsonDefault = parcelHelpers.interopDefault(_csJson);
 var _esJson = require("./es.json");
 var _esJsonDefault = parcelHelpers.interopDefault(_esJson);
+var _faJson = require("./fa.json");
+var _faJsonDefault = parcelHelpers.interopDefault(_faJson);
 class I18n {
     constructor(art){
         this.art = art;
         this.languages = {
             "zh-cn": (0, _zhCnJsonDefault.default),
             "zh-tw": (0, _zhTwJsonDefault.default),
-            "pl": (0, _plJsonDefault.default),
-            "cs": (0, _csJsonDefault.default),
-            "es": (0, _esJsonDefault.default)
+            pl: (0, _plJsonDefault.default),
+            cs: (0, _csJsonDefault.default),
+            es: (0, _esJsonDefault.default),
+            fa: (0, _faJsonDefault.default)
         };
         this.init();
     }
@@ -1353,7 +1365,7 @@ class I18n {
 }
 exports.default = I18n;
 
-},{"../utils":"euhMG","./zh-cn.json":"b9Y6f","./zh-tw.json":"9Kly9","./pl.json":"krPOm","./cs.json":"jNcs5","./es.json":"2LP8P","@parcel/transformer-js/src/esmodule-helpers.js":"8MjWm"}],"b9Y6f":[function(require,module,exports) {
+},{"../utils":"euhMG","./zh-cn.json":"b9Y6f","./zh-tw.json":"9Kly9","./pl.json":"krPOm","./cs.json":"jNcs5","./es.json":"2LP8P","./fa.json":"hfg0x","@parcel/transformer-js/src/esmodule-helpers.js":"8MjWm"}],"b9Y6f":[function(require,module,exports) {
 module.exports = JSON.parse('{"Video Info":"统计信息","Close":"关闭","Video Load Failed":"加载失败","Volume":"音量","Play":"播放","Pause":"暂停","Rate":"速度","Mute":"静音","Video Flip":"画面翻转","Horizontal":"水平","Vertical":"垂直","Reconnect":"重新连接","Show Setting":"显示设置","Hide Setting":"隐藏设置","Screenshot":"截图","Play Speed":"播放速度","Aspect Ratio":"画面比例","Default":"默认","Normal":"正常","Open":"打开","Switch Video":"切换","Switch Subtitle":"切换字幕","Fullscreen":"全屏","Exit Fullscreen":"退出全屏","Web Fullscreen":"网页全屏","Exit Web Fullscreen":"退出网页全屏","Mini Player":"迷你播放器","PIP Mode":"开启画中画","Exit PIP Mode":"退出画中画","PIP Not Supported":"不支持画中画","Fullscreen Not Supported":"不支持全屏","Subtitle Offset":"字幕偏移","Last Seen":"上次看到","Jump Play":"跳转播放","AirPlay":"隔空播放","AirPlay Not Available":"隔空播放不可用"}');
 
 },{}],"9Kly9":[function(require,module,exports) {
@@ -1367,6 +1379,9 @@ module.exports = JSON.parse('{"Video Info":"Info o videu","Close":"Zavř\xedt","
 
 },{}],"2LP8P":[function(require,module,exports) {
 module.exports = JSON.parse('{"Video Info":"Informaci\xf3n del video","Close":"Cerrar","Video Load Failed":"Fall\xf3 carga de video","Volume":"Volumen","Play":"Reproduciendo","Pause":"Pausa","Rate":"Velocidad","Mute":"Silencio","Video Flip":"Rotar video","Horizontal":"Horizontal","Vertical":"Vertical","Reconnect":"Reconectando","Show Setting":"Mostrar ajustes","Hide Setting":"Ocultar ajustes","Screenshot":"Captura de Pantalla","Play Speed":"Velocidad de reproducci\xf3n","Aspect Ratio":"Relaci\xf3n de aspecto","Default":"Por defecto","Normal":"Normal","Open":"Abrir","Switch Video":"Cambiar video","Switch Subtitle":"Cambiar subt\xedtulo","Fullscreen":"Pantalla completa","Exit Fullscreen":"Salir de Pantalla completa","Web Fullscreen":"Pantalla completa Web","Exit Web Fullscreen":"Salir de Pantalla completa","Mini Player":"Mini reproductor","PIP Mode":"Modo PiP","Exit PIP Mode":"Cerrar modo PiP","PIP Not Supported":"Modo PiP no compatible","Fullscreen Not Supported":"Pantalla completa no soportada","Subtitle Offset":"Ajuste subt\xedtulo","Last Seen":"Visto \xfaltima vez","Jump Play":"Saltar","AirPlay":"AirPlay","AirPlay Not Available":"AirPlay no disponible"}');
+
+},{}],"hfg0x":[function(require,module,exports) {
+module.exports = JSON.parse('{"Video Info":"اطلاعات ویدیو","Close":"بستن","Video Load Failed":"بارگذاری ناموفق","Play":"پخش","Volume":"میزان صدا","Pause":"توقف","Rate":"نرخ","Mute":"سکوت","Video Flip":"چرخش تصویر","Horizontal":"افقی","Vertical":"عمودی","Reconnect":"اتصال مجدد","Show Setting":"تنظیمات","Hide Setting":"بستن تنظیمات","Screenshot":"عکس از صفحه","Play Speed":"سرعت پخش","Aspect Ratio":"نسبت تصویر","Default":"حالت پیشفرض","Normal":" حالت عادی","Open":"بازکردن","Switch Video":"تغییر ویدیو","Switch Subtitle":"نغییر زیرنویس","Fullscreen":"تمام صفحه","Exit Fullscreen":"کوچک کردن","Web Fullscreen":"حالت تئاتر","Exit Web Fullscreen":"خروج از حالت تئاتر","Mini Player":"حالت پخش کوچک","PIP Mode":" مینی پلیر","Exit PIP Mode":"خروج از مینی پلیر","PIP Not Supported":"عدم پشتیبانی از مینی پلیر","Fullscreen Not Supported":"عدم پشتیبانی از حالت تمام صفحه","Subtitle Offset":"افست زیرنویس","Last Seen":"آخرین بازدید","Jump Play":"جامپ پلی","AirPlay":"ایر پلی","AirPlay Not Available":"عدم پشتیبانی از ایرپلی"}');
 
 },{}],"kmRM5":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -3675,7 +3690,7 @@ parcelHelpers.defineInteropFlag(exports);
 function version(option) {
     return {
         ...option,
-        html: `<a href="https://artplayer.org" target="_blank">ArtPlayer ${"4.5.7"}</a>`
+        html: `<a href="https://artplayer.org" target="_blank">ArtPlayer ${"4.5.8"}</a>`
     };
 }
 exports.default = version;
@@ -4437,8 +4452,7 @@ class Setting extends (0, _componentDefault.default) {
             if (option.flip) this.option.push((0, _flipDefault.default)(art));
             if (option.subtitleOffset) this.option.push((0, _subtitleOffsetDefault.default)(art));
             for(let index = 0; index < option.settings.length; index++)this.option.push(option.settings[index]);
-            this.option = makeRecursion(this.option);
-            this.init(this.option);
+            this.update();
             art.on("blur", ()=>{
                 if (this.show) {
                     this.show = false;
@@ -4453,15 +4467,19 @@ class Setting extends (0, _componentDefault.default) {
             });
         }
     }
-    add(callback) {
-        if (typeof callback === "function") this.option.push(callback(this.art));
-        else this.option.push(callback);
+    update() {
         this.cache = new Map();
         this.events.forEach((event)=>event());
         this.events = [];
         this.$parent.innerHTML = "";
         this.option = makeRecursion(this.option);
         this.init(this.option);
+        return this;
+    }
+    add(setting) {
+        this.option.push(setting);
+        this.update();
+        return this;
     }
     creatHeader(item) {
         const { icons , proxy  } = this.art;
@@ -4474,9 +4492,7 @@ class Setting extends (0, _componentDefault.default) {
         (0, _utils.append)($icon, icons.arrowLeft);
         (0, _utils.append)($left, $icon);
         (0, _utils.append)($left, item.$parentItem.html);
-        const event = proxy($item, "click", ()=>{
-            this.init(item.$parentList);
-        });
+        const event = proxy($item, "click", ()=>this.init(item.$parentList));
         this.events.push(event);
         return $item;
     }
@@ -4634,6 +4650,10 @@ class Setting extends (0, _componentDefault.default) {
                         if (item.selector && item.selector.length) this.init(item.selector, item.width);
                         else {
                             (0, _utils.inverseClass)($item, "art-current");
+                            for(let index = 0; index < item.$parentItem.selector.length; index++){
+                                const element = item.$parentItem.selector[index];
+                                element.default = element === item;
+                            }
                             if (item.$parentList) this.init(item.$parentList);
                             if (item.$parentItem && item.$parentItem.onSelect) {
                                 const result = await item.$parentItem.onSelect.call(this.art, item, $item, event);
@@ -4937,7 +4957,7 @@ class Plugins {
     }
     add(plugin) {
         this.id += 1;
-        const result = plugin.call(this, this.art);
+        const result = plugin.call(this.art, this.art);
         const pluginName = result && result.name || plugin.name || `plugin${this.id}`;
         (0, _utils.errorHandle)(!(0, _utils.has)(this, pluginName), `Cannot add a plugin that already has the same name: ${pluginName}`);
         (0, _utils.def)(this, pluginName, {
