@@ -38,6 +38,7 @@
                     position: relative;
                     height: 50%;
                     width: 100%;
+                    transition: all 0.2s ease;
                     background: rgba(255, 255, 255, 0.2);
 
                     .art-progress-loaded {
@@ -100,6 +101,10 @@
                             height: 100%;
                             pointer-events: none;
                             user-select: none;
+                        }
+
+                        &:hover {
+                            transform: scale(1.2, 1.2) !important;
                         }
                     }
 
@@ -204,10 +209,6 @@
                 &:hover {
                     opacity: 1;
                 }
-            }
-
-            .art-control-onlyText {
-                padding: 0 10px;
             }
 
             .art-control-volume {

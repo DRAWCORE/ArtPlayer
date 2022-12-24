@@ -1,4 +1,14 @@
-import { hasClass, addClass, removeClass, append, setStyles, tooltip, getStyle, inverseClass, createElement } from './dom';
+import {
+    hasClass,
+    addClass,
+    removeClass,
+    append,
+    setStyles,
+    tooltip,
+    getStyle,
+    inverseClass,
+    createElement,
+} from './dom';
 import validator from 'option-validator';
 import { ComponentOption } from '../scheme';
 import { has, def } from './property';
@@ -80,10 +90,6 @@ export default class Component {
 
         if (option.mounted) {
             option.mounted.call(this.art, $ref);
-        }
-
-        if ($ref.childNodes.length === 1 && $ref.childNodes[0].nodeType === 3) {
-            addClass($ref, 'art-control-onlyText');
         }
 
         def(this, name, {
